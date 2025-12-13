@@ -3,4 +3,4 @@ A Nothing community-driven project that aims to bring widgets to the next level 
 
 
 
-[Discord link](https://discord.gg/pcV6Rj9S7F)
+[Discord Server](https://discord.gg/pcV6Rj9S7F)
