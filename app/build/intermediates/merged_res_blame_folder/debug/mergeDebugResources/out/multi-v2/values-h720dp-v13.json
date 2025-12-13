@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.EssentialWidget.org.app-mergeDebugResources-29:/values-h720dp-v13/values-h720dp-v13.xml",
+            "map": [
+                {
+                    "source": "/home/apheff/.gradle/caches/8.13/transforms/003ac2f7c374f46b5310cb62d4fe77be/transformed/appcompat-1.6.1/res/values-h720dp-v13/values-h720dp-v13.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "66",
+                        "endOffsets": "117"
+                    }
+                }
+            ]
+        }
+    ]
+}

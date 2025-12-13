@@ -1,0 +1,20 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color cyan
+color grey
+color nothing_blue
+color nothing_green
+color nothing_red
+color nothing_yellow
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_foreground
+mipmap ic_launcher_round
+string app_name
+style Theme.EssentialWidget
+xml backup_rules
+xml data_extraction_rules

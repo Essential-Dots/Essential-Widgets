@@ -1,0 +1,7 @@
+com.EssentialWidget.org.test.app-core-1.5.0-0 /home/apheff/.gradle/caches/8.13/transforms/7775754acc691dcf377e99ce9edaac2a/transformed/core-1.5.0/res
+com.EssentialWidget.org.test.app-annotation-experimental-1.3.0-1 /home/apheff/.gradle/caches/8.13/transforms/e537ad957d370a2d98ef205098149f1f/transformed/annotation-experimental-1.3.0/res
+com.EssentialWidget.org.test.app-androidTest-2 /home/apheff/AndroidStudioProjects/EssentialWidget/app/build/generated/res/resValues/androidTest/debug
+com.EssentialWidget.org.test.app-updated_navigation_xml-3 /home/apheff/AndroidStudioProjects/EssentialWidget/app/build/generated/updated_navigation_xml/debugAndroidTest
+com.EssentialWidget.org.test.app-mergeDebugAndroidTestResources-4 /home/apheff/AndroidStudioProjects/EssentialWidget/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
+com.EssentialWidget.org.test.app-mergeDebugAndroidTestResources-5 /home/apheff/AndroidStudioProjects/EssentialWidget/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
+com.EssentialWidget.org.test.app-debugAndroidTest-6 /home/apheff/AndroidStudioProjects/EssentialWidget/app/build/intermediates/merged_res/debugAndroidTest/mergeDebugAndroidTestResources

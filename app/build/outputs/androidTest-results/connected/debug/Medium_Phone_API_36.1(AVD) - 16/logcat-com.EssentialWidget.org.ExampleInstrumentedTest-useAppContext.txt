@@ -1,0 +1,2 @@
+12-12 21:50:25.716  7237  7256 I TestRunner: started: useAppContext(com.EssentialWidget.org.ExampleInstrumentedTest)
+12-12 21:50:25.719  7237  7256 I TestRunner: finished: useAppContext(com.EssentialWidget.org.ExampleInstrumentedTest)
