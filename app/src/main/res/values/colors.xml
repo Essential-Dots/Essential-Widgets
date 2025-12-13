@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Add here more colors if needed -->
+
+
+    <!-- Nothing color theme -->
+    <color name="nothing_red">#D71921</color>
+    <color name="nothing_blue">#012F6B</color>
+    <color name="nothing_yellow">#FFC700</color>
+    <color name="cyan">#3182AA</color>
+    <color name="nothing_green">#13B721</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#DFDFDF</color>
+</resources>
