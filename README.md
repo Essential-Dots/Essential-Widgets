@@ -1,5 +1,5 @@
 # Essential-Widget
-A Nothings community-driven project that aims to bring widgets to the next level by adding the community personality. 
+A Nothing community-driven project that aims to bring widgets to the next level by adding the community personality. 
 
 
 
