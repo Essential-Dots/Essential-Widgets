@@ -5,12 +5,13 @@
 
 
     <!-- Nothing color theme -->
+    <color name="nothing_grey">#B9BBBB</color>
     <color name="nothing_red">#D71921</color>
     <color name="nothing_blue">#012F6B</color>
     <color name="nothing_yellow">#FFC700</color>
     <color name="cyan">#3182AA</color>
     <color name="nothing_green">#13B721</color>
-    <color name="forground">#000000</color>
-    <color name="background">#FFFFFF</color>
+    <color name="background">#000000</color>
+    <color name="forground">#FFFFFF</color>
     <color name="grey">#DFDFDF</color>
 </resources>
