@@ -12,10 +12,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_UNLABELED
 
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> {
+                R.id.widget -> {
                     // Se viene premuto "home", sostituisci il contenitore con HomeFragment
                     replaceFragment(WidgetFragment())
                     true // Indica che l'evento è stato gestito
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         // seleziona programmaticamente la voce "home".
         // Questo attiverà il listener qui sopra e caricherà HomeFragment.
         if (savedInstanceState == null) {
-            bottomNav.selectedItemId = R.id.nav_home
+            bottomNav.selectedItemId = R.id.widget
         }
     }
 

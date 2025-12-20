@@ -15,33 +15,23 @@
         tools:layout_editor_absoluteX="-71dp"
         tools:layout_editor_absoluteY="-165dp" />
 
-    <!-- Title: Essential Widgets -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/serif_regular"
-        android:text="Essential Widgets"
-        android:textColor="@color/forground"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.09" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
         android:background="@drawable/round_rectangle"
-        android:elevation="8dp"
+        android:elevation="1dp"
         app:itemIconTint="@drawable/bottom_navigation_color_selector"
+        app:itemTextColor="@drawable/bottom_navigation_color_selector"
         app:labelVisibilityMode="unlabeled"
+        app:activeIndicatorLabelPadding="0px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
