@@ -1,8 +1,0 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.EssentialWidget" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="android:colorPrimary">@color/nothing_red</item>
-        <item name="android:windowBackground">@color/background</item>
-    </style>
-</resources>
