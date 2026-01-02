@@ -66,7 +66,7 @@ class ClockUpdateService : Service() {
                     }
                 }
             }
-        }, delay, 60000) // Update every 60,000 ms (1 minute)
+        }, delay, 60000L) // Update every 60,000 ms (1 minute)
     }
 
     private fun startForegroundWithNotification() {

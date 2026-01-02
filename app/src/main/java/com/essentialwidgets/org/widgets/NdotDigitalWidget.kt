@@ -1,19 +1,20 @@
 package com.essentialwidgets.org.widgets
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.provider.AlarmClock
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ExperimentalGraphicsApi
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.DpSize
-import androidx.glance.layout.Alignment
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -22,16 +23,16 @@ import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.LocalSize
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.SizeMode
+import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
-import androidx.glance.currentState
+import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.padding
-import androidx.glance.state.GlanceStateDefinition
-import androidx.glance.state.PreferencesGlanceStateDefinition
 import com.essentialwidgets.org.R
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -65,7 +66,8 @@ class NdotDigitalWidget : GlanceAppWidget() {
         }
     }
 
-    @OptIn(ExperimentalGraphicsApi::class)
+
+
     @Composable
     fun DigitalClockContent() {
         val context = LocalContext.current
@@ -84,11 +86,13 @@ class NdotDigitalWidget : GlanceAppWidget() {
 
         val bitmap = createTextBitmap(context, time, textSizeSp, textColor)
 
-
         Box(
             modifier =  GlanceModifier
                 .fillMaxSize()
-                .background(GlanceTheme.colors.surface),
+                .background(GlanceTheme.colors.surface)
+                .clickable(
+                    actionStartActivity(Intent(AlarmClock.ACTION_SHOW_ALARMS))
+                    ),
             contentAlignment = Alignment.Center
         ) {
             Image(

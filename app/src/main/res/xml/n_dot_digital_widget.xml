@@ -8,5 +8,6 @@
     android:targetCellWidth="2"
     android:targetCellHeight="1"
     android:maxResizeHeight="120dp"
-    android:maxResizeWidth="120dp">
+    android:maxResizeWidth="120dp"
+    android:previewImage="@drawable/ic_ndot_widget_digital_clock">
 </appwidget-provider>
