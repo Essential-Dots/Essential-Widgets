@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/alarm_widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:padding="8dp"
+    android:background="@drawable/widget_background">
+
+    <ImageView
+        android:id="@+id/alarm_icon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:contentDescription="Alarm Status"
+        android:src="@drawable/ic_alarm_on"
+        app:tint="@color/foreground" />
+
+    <ImageView
+        android:id="@+id/alarm_status_text_as_image"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp" />
+
+    <ImageView
+        android:id="@+id/red_circle_icon"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/ic_red_circle"/>
+
+</LinearLayout>

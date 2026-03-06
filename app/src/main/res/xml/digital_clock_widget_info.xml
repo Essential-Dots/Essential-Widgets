@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="120dp"
+    android:minHeight="60dp"
+    android:maxResizeWidth="120dp"
+    android:maxResizeHeight="60dp"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/digital_widget_layout"
+    android:previewImage="@drawable/ic_ndot_widget_digital_clock"
+    android:widgetCategory="home_screen">
+</appwidget-provider>

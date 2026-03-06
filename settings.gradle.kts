@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "EssentialWidget"
+rootProject.name = "EssentialWidgets"
 include(":app")
  

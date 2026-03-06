@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:background="@drawable/nav_background"
+    android:elevation="8dp"
+    android:gravity="center_vertical"
+    tools:viewBindingIgnore="true"
+    >
+
+    <!-- Navigation Icon 1 (Home) -->
+    <ImageView
+        android:id="@+id/nav_icon_widgets"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scaleType="center"
+        android:padding="12dp"
+        android:src="@drawable/ic_widgets"
+        app:tint="@color/icon_tint_color_selector"
+        tools:ignore="ContentDescription"
+
+        />
+
+    <!-- Navigation Icon 2 (Favorites) -->
+    <ImageView
+        android:id="@+id/nav_icon_favorites"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scaleType="center"
+        android:padding="12dp"
+        android:src="@drawable/ic_favorites"
+        app:tint="@color/icon_tint_color_selector"
+        tools:ignore="ContentDescription"
+        />
+
+</LinearLayout>
