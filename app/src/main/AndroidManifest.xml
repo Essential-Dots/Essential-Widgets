@@ -19,51 +19,65 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EssentialWidgets">
 
-    <activity
-        android:name=".MainActivity"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
-    <service
-        android:name=".ThemeWatcherService"
-        android:exported="false"
-        android:foregroundServiceType="specialUse">
-        <property
-            android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-            android:value="widget_theme_watcher" />
-    </service>
+        <service
+            android:name=".ThemeWatcherService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="widget_theme_watcher" />
+        </service>
 
-    <!-- Clock widget provider -->
-    <receiver
-        android:name=".ClockWidgetProvider"
-        android:exported="false">
-        <intent-filter>
-            <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            <action android:name="android.intent.action.CONFIGURATION_CHANGED" />
-        </intent-filter>
+        <!-- Clock widget provider -->
+        <receiver
+            android:name=".ClockWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED" />
+            </intent-filter>
 
-        <meta-data
-            android:name="android.appwidget.provider"
-            android:resource="@xml/digital_clock_widget_info" />
-    </receiver>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/digital_clock_widget_info" />
+        </receiver>
 
-    <!-- Alarm widget provider -->
-    <receiver
-        android:name=".AlarmWidgetProvider"
-        android:exported="false">
-        <intent-filter>
-            <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            <action android:name="android.app.action.NEXT_ALARM_CLOCK_CHANGED" />
-        </intent-filter>
+        <!-- Alarm widget provider -->
+        <receiver
+            android:name=".AlarmWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.app.action.NEXT_ALARM_CLOCK_CHANGED" />
+            </intent-filter>
 
-        <meta-data
-            android:name="android.appwidget.provider"
-            android:resource="@xml/alarm_widget_info" />
-    </receiver>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/alarm_widget_info" />
+        </receiver>
+
+        <!-- Calendar Widget -->
+        <receiver
+            android:name=".CalendarWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIME_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calendar_widget_info" />
+        </receiver>
     </application>
 
 

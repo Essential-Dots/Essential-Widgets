@@ -30,7 +30,7 @@ class ClockWidgetProvider : AppWidgetProvider() {
                 ComponentName(context, ClockWidgetProvider::class.java)
             )
             for (appWidgetId in allIds) {
-                updateAppWidget(context, appWidgetManager, appWidgetId)
+                updateClockWidget(context, appWidgetManager, appWidgetId)
             }
         }
     }
@@ -46,7 +46,7 @@ class ClockWidgetProvider : AppWidgetProvider() {
         val allIds = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, ClockWidgetProvider::class.java))
         for (appWidgetId in allIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
+            updateClockWidget(context, appWidgetManager, appWidgetId)
         }
         scheduleNextUpdate(context)
     }
@@ -84,14 +84,14 @@ fun scheduleNextUpdate(context: Context) {
     alarmManager.setWindow(AlarmManager.RTC, nextMinute, 60000, pendingIntent)
 }
 
-internal fun updateAppWidget(
+internal fun updateClockWidget(
     context: Context,
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
     val views = RemoteViews(context.packageName, R.layout.digital_widget_layout)
 
-    val typeface = context.resources.getFont(R.font.serif_headline)
+    val typeface = context.resources.getFont(R.font.ntype82_regular)
     val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
 
     val isDarkMode = context.resources.configuration.uiMode and
@@ -137,7 +137,6 @@ private fun createClockBitmap(
         this.textSize = textSizePx
 
         this.color = textColor
-        this.isFakeBoldText = true
     }
 
     val amPmTypeface = context.resources.getFont(R.font.inter)

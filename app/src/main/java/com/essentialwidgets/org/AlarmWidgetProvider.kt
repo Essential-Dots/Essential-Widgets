@@ -60,26 +60,39 @@ internal fun updateAlarmWidget(
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val nextAlarm: AlarmManager.AlarmClockInfo? = alarmManager.nextAlarmClock
 
-    val textToDisplay: String
+    val clockToDisplay: String
+    val amTextToDisplay: String
     val isAlarmSet: Boolean
 
     if (nextAlarm != null) {
         val alarmTime = nextAlarm.triggerTime
-        textToDisplay = SimpleDateFormat("EEE, h:mm a", Locale.getDefault()).format(alarmTime)
+        clockToDisplay = SimpleDateFormat("h:mm", Locale.getDefault()).format(alarmTime)
+        amTextToDisplay = SimpleDateFormat("a", Locale.getDefault()).format(alarmTime)
         views.setImageViewResource(R.id.alarm_icon, R.drawable.ic_alarm_on)
         views.setInt(R.id.alarm_icon, "setColorFilter", iconColor)
         isAlarmSet = true
     } else {
-        textToDisplay = "No Alarm Set"
+        clockToDisplay = "No Alarm"
+        amTextToDisplay = ""
         views.setImageViewResource(R.id.alarm_icon, R.drawable.ic_alarm_off)
         views.setInt(R.id.alarm_icon, "setColorFilter", iconColor)
         isAlarmSet = false
     }
 
-    // Draw text as bitmap with custom font
     val typeface = context.resources.getFont(R.font.serif_headline)
-    val textBitmap = createTextBitmap(context, textToDisplay, typeface, 16f)
-    views.setImageViewBitmap(R.id.alarm_status_text_as_image, textBitmap)
+
+    // Bitmap for the clock (es. "7:30")
+    val clockBitmap = createTextBitmap(context, clockToDisplay, typeface, 24f)
+    views.setImageViewBitmap(R.id.alarm_status_text_as_image, clockBitmap)
+
+    // Bitmap for AM/PM — only if the alarm was set
+    if (isAlarmSet && amTextToDisplay.isNotEmpty()) {
+        val amBitmap = createTextBitmap(context, amTextToDisplay, context.resources.getFont(R.font.inter), 12f)
+        views.setImageViewBitmap(R.id.alarm_am_text, amBitmap)
+        views.setViewVisibility(R.id.alarm_am_text, View.VISIBLE)
+    } else {
+        views.setViewVisibility(R.id.alarm_am_text, View.GONE)
+    }
 
     // Show or hide red dot based on alarm state
     views.setViewVisibility(R.id.red_circle_icon, if (isAlarmSet) View.VISIBLE else View.GONE)

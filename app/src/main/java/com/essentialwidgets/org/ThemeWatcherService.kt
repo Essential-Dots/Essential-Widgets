@@ -22,12 +22,17 @@ class ThemeWatcherService : Service() {
                 // Update clock widget
                 appWidgetManager.getAppWidgetIds(
                     ComponentName(context, ClockWidgetProvider::class.java)
-                ).forEach { updateAppWidget(context, appWidgetManager, it) }
+                ).forEach { updateClockWidget(context, appWidgetManager, it) }
 
                 // Update alarm widget
                 appWidgetManager.getAppWidgetIds(
                     ComponentName(context, AlarmWidgetProvider::class.java)
                 ).forEach { updateAlarmWidget(context, appWidgetManager, it) }
+
+                // Update calendar widget
+                appWidgetManager.getAppWidgetIds(
+                    ComponentName(context, CalendarWidgetProvider::class.java)
+                ).forEach { updateCalendarWidget(context, appWidgetManager, it) }
             }
         }
     }
