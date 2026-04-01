@@ -6,4 +6,8 @@
     android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/calendar_widget"
     android:resizeMode="none"
-    android:widgetCategory="home_screen" />
+    android:widgetCategory="home_screen"
+
+    android:label="Calendar"
+    android:description="@string/calendar_widget_description"
+    android:previewImage="@drawable/calendar_widget_preview"/>

@@ -19,10 +19,11 @@ class ThemeWatcherService : Service() {
             if (intent.action == Intent.ACTION_CONFIGURATION_CHANGED) {
                 val appWidgetManager = AppWidgetManager.getInstance(context)
 
-                // Update clock widget
+
+                // Update digital time 2 widget
                 appWidgetManager.getAppWidgetIds(
-                    ComponentName(context, ClockWidgetProvider::class.java)
-                ).forEach { updateClockWidget(context, appWidgetManager, it) }
+                    ComponentName(context, DigitalTime2Provider::class.java)
+                ).forEach { updateDigitalTime2Widget(context, appWidgetManager, it) }
 
                 // Update alarm widget
                 appWidgetManager.getAppWidgetIds(

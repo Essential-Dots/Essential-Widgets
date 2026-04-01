@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -19,129 +20,116 @@ import java.util.Locale
 
 class AlarmWidgetProvider : AppWidgetProvider() {
 
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
-        for (appWidgetId in appWidgetIds) {
-            updateAlarmWidget(context, appWidgetManager, appWidgetId)
-        }
+    /** Called by the system when the widget needs to be updated */
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        appWidgetIds.forEach { updateAlarmWidget(context, appWidgetManager, it) }
     }
 
+    /** Listens for alarm clock changes to keep the widget in sync */
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         if (intent.action == AlarmManager.ACTION_NEXT_ALARM_CLOCK_CHANGED) {
-            val appWidgetManager = AppWidgetManager.getInstance(context)
-            val allIds = appWidgetManager.getAppWidgetIds(
-                android.content.ComponentName(context, AlarmWidgetProvider::class.java)
-            )
-            for (id in allIds) {
-                updateAlarmWidget(context, appWidgetManager, id)
-            }
+            val manager = AppWidgetManager.getInstance(context)
+            manager.getAppWidgetIds(ComponentName(context, AlarmWidgetProvider::class.java))
+                .forEach { updateAlarmWidget(context, manager, it) }
         }
     }
 }
 
-internal fun updateAlarmWidget(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    appWidgetId: Int
-) {
-    val views = RemoteViews(context.packageName, R.layout.alarm_widget_layout)
+/**
+ * Builds and pushes the alarm widget UI.
+ * Shows the next alarm time with AM/PM and a red dot indicator,
+ * or "No Alarm" if no alarm is set.
+ * Internal so ThemeWatcherService can call it directly.
+ */
+internal fun updateAlarmWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+    val views    = RemoteViews(context.packageName, R.layout.alarm_widget_layout)
+    val iconColor = context.themeColor()
 
-    // Detect light/dark mode for icon and text color
-    val isDarkMode = context.resources.configuration.uiMode and
-            android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
-            android.content.res.Configuration.UI_MODE_NIGHT_YES
-    val iconColor = if (isDarkMode) android.graphics.Color.WHITE else android.graphics.Color.BLACK
-
-    // Get next alarm from system
+    // Fetch the next scheduled alarm from the system
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    val nextAlarm: AlarmManager.AlarmClockInfo? = alarmManager.nextAlarmClock
+    val nextAlarm    = alarmManager.nextAlarmClock
 
-    val clockToDisplay: String
-    val amTextToDisplay: String
+    val clockText: String
+    val amPmText: String
     val isAlarmSet: Boolean
 
     if (nextAlarm != null) {
-        val alarmTime = nextAlarm.triggerTime
-        clockToDisplay = SimpleDateFormat("h:mm", Locale.getDefault()).format(alarmTime)
-        amTextToDisplay = SimpleDateFormat("a", Locale.getDefault()).format(alarmTime)
-        views.setImageViewResource(R.id.alarm_icon, R.drawable.ic_alarm_on)
-        views.setInt(R.id.alarm_icon, "setColorFilter", iconColor)
+        // Format the alarm time into separate time and AM/PM strings
+        val time   = nextAlarm.triggerTime
+        clockText  = SimpleDateFormat("h:mm", Locale.getDefault()).format(time)
+        amPmText   = SimpleDateFormat("a", Locale.getDefault()).format(time)
         isAlarmSet = true
+        views.setImageViewResource(R.id.alarm_icon, R.drawable.ic_alarm_on)
     } else {
-        clockToDisplay = "No Alarm"
-        amTextToDisplay = ""
-        views.setImageViewResource(R.id.alarm_icon, R.drawable.ic_alarm_off)
-        views.setInt(R.id.alarm_icon, "setColorFilter", iconColor)
+        // No alarm set — show placeholder text and off icon
+        clockText  = "No Alarm"
+        amPmText   = ""
         isAlarmSet = false
+        views.setImageViewResource(R.id.alarm_icon, R.drawable.ic_alarm_off)
     }
 
-    val typeface = context.resources.getFont(R.font.serif_headline)
+    // Tint the alarm icon to match the current theme
+    views.setInt(R.id.alarm_icon, "setColorFilter", iconColor)
 
-    // Bitmap for the clock (es. "7:30")
-    val clockBitmap = createTextBitmap(context, clockToDisplay, typeface, 24f)
-    views.setImageViewBitmap(R.id.alarm_status_text_as_image, clockBitmap)
+    val serifTf = context.font(R.font.serif_headline)
+    val interTf = context.font(R.font.inter)
 
-    // Bitmap for AM/PM — only if the alarm was set
-    if (isAlarmSet && amTextToDisplay.isNotEmpty()) {
-        val amBitmap = createTextBitmap(context, amTextToDisplay, context.resources.getFont(R.font.inter), 12f)
-        views.setImageViewBitmap(R.id.alarm_am_text, amBitmap)
+    // Render the clock time as a bitmap with the serif font
+    views.setImageViewBitmap(
+        R.id.alarm_status_text_as_image,
+        createTextBitmap(context, clockText, serifTf, 24f)
+    )
+
+    // Render AM/PM only when an alarm is active
+    if (isAlarmSet && amPmText.isNotEmpty()) {
+        views.setImageViewBitmap(
+            R.id.alarm_am_text,
+            createTextBitmap(context, amPmText, interTf, 12f)
+        )
         views.setViewVisibility(R.id.alarm_am_text, View.VISIBLE)
     } else {
         views.setViewVisibility(R.id.alarm_am_text, View.GONE)
     }
 
-    // Show or hide red dot based on alarm state
+    // Show the red dot indicator only when an alarm is active
     views.setViewVisibility(R.id.red_circle_icon, if (isAlarmSet) View.VISIBLE else View.GONE)
 
-    // Open Clock app to set a new alarm on tap
-    val intent = Intent(AlarmClock.ACTION_SET_ALARM).apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    }
-    val pendingIntent = PendingIntent.getActivity(
-        context, appWidgetId, intent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    // Tap opens the clock app to set or edit an alarm
+    views.setOnClickPendingIntent(
+        R.id.alarm_widget_root,
+        context.openAppIntent(appWidgetId, Intent(AlarmClock.ACTION_SET_ALARM))
     )
-    views.setOnClickPendingIntent(R.id.alarm_widget_root, pendingIntent)
 
     appWidgetManager.updateAppWidget(appWidgetId, views)
 }
 
-private fun createTextBitmap(
-    context: Context,
-    text: String,
-    typeface: Typeface,
-    textSizeSp: Float
-): Bitmap {
-    val textSizePx = textSizeSp * context.resources.displayMetrics.scaledDensity
-
-    // Read color based on light/dark mode
-    val isDarkMode = context.resources.configuration.uiMode and
-            android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
-            android.content.res.Configuration.UI_MODE_NIGHT_YES
-    val textColor = if (isDarkMode) android.graphics.Color.WHITE else android.graphics.Color.BLACK
+/**
+ * Renders a string onto a Bitmap using the given typeface and size.
+ * Size is expressed in dp to stay immune to system font scaling.
+ * Text color adapts automatically to light/dark mode.
+ */
+internal fun createTextBitmap(context: Context, text: String, typeface: Typeface, textSizeDp: Float): Bitmap {
+    // Convert dp to px — using density (not scaledDensity) to ignore user font scale
+    val textSizePx = textSizeDp * context.resources.displayMetrics.density
 
     val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         this.typeface = typeface
         this.textSize = textSizePx
-        this.color = textColor
+        this.color    = context.themeColor()
     }
 
-    val textWidth = paint.measureText(text)
-    val top = paint.fontMetrics.top
+    // Use font metrics to size the bitmap precisely around the text
+    val top    = paint.fontMetrics.top
     val bottom = paint.fontMetrics.bottom
-    val textHeight = bottom - top
 
     val bitmap = Bitmap.createBitmap(
-        maxOf(textWidth.toInt(), 1),
-        maxOf(textHeight.toInt(), 1),
+        maxOf(paint.measureText(text).toInt(), 1),
+        maxOf((bottom - top).toInt(), 1),
         Bitmap.Config.ARGB_8888
     )
-    val canvas = Canvas(bitmap)
-    canvas.drawText(text, 0f, -top, paint)
 
+    // Draw the text baseline-aligned within the bitmap
+    Canvas(bitmap).drawText(text, 0f, -top, paint)
     return bitmap
 }

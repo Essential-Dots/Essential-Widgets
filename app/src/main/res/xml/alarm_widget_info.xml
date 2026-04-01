@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="120dp"
     android:minHeight="60dp"
@@ -9,5 +8,9 @@
     android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/alarm_widget_layout"
     android:resizeMode="horizontal|vertical"
-    android:widgetCategory="home_screen">
-</appwidget-provider>
+    android:widgetCategory="home_screen"
+
+    android:label="Alarm"
+    android:description="@string/alarm_widget_description"
+    android:previewImage="@drawable/alarm_widget_preview"/>
+

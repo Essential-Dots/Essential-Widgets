@@ -6,24 +6,18 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.*
-import android.util.TypedValue
 import android.widget.RemoteViews
 import java.util.Calendar
-import android.graphics.Color
-
 
 class CalendarWidgetProvider : AppWidgetProvider() {
 
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
+    /** Called by the system when the widget needs to be updated */
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         appWidgetIds.forEach { updateCalendarWidget(context, appWidgetManager, it) }
     }
 
+    /** Listens for date/time changes to keep the calendar in sync */
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         if (intent.action == Intent.ACTION_DATE_CHANGED ||
@@ -31,88 +25,85 @@ class CalendarWidgetProvider : AppWidgetProvider() {
             intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE
         ) {
             val manager = AppWidgetManager.getInstance(context)
-            val ids = manager.getAppWidgetIds(
-                ComponentName(context, CalendarWidgetProvider::class.java)
-            )
-            ids.forEach { updateCalendarWidget(context, manager, it) }
+            manager.getAppWidgetIds(ComponentName(context, CalendarWidgetProvider::class.java))
+                .forEach { updateCalendarWidget(context, manager, it) }
         }
     }
 }
 
-// ── fuori dalla classe ──
-
-internal fun updateCalendarWidget(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    widgetId: Int
-) {
-    val isDark = (context.resources.configuration.uiMode and
-            Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-
-    val textColor = if (isDark) Color.WHITE else Color.BLACK
-
-    val bitmap = drawCalendar(context, textColor)
-
+/**
+ * Builds and pushes the calendar widget UI.
+ * Draws the current month grid with today highlighted.
+ * Internal so ThemeWatcherService can call it directly.
+ */
+internal fun updateCalendarWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
     val views = RemoteViews(context.packageName, R.layout.calendar_widget)
-    views.setImageViewBitmap(R.id.widget_canvas, bitmap)
+
+    // Draw the calendar onto a bitmap and set it as the widget image
+    views.setImageViewBitmap(R.id.widget_canvas, drawCalendar(context))
+
+    // Apply the themed rounded background drawable
     views.setInt(R.id.widget_root, "setBackgroundResource", R.drawable.widget_background)
 
-    val intent = Intent(Intent.ACTION_MAIN).apply {
+    // Tap opens the system calendar app
+    val calendarIntent = Intent(Intent.ACTION_MAIN).apply {
         addCategory(Intent.CATEGORY_APP_CALENDAR)
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK
     }
-    val pi = PendingIntent.getActivity(
-        context, 0, intent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-    )
-    views.setOnClickPendingIntent(R.id.widget_root, pi)
+    views.setOnClickPendingIntent(R.id.widget_root, context.openAppIntent(0, calendarIntent))
 
     appWidgetManager.updateAppWidget(widgetId, views)
 }
 
-private fun drawCalendar(
-    context: Context,
-    textColor: Int,
-): Bitmap {
-    val W = 800
-    val H = 800
+/**
+ * Draws the full calendar month onto a Bitmap.
+ * Includes a header with the day and month name,
+ * and a 7-column grid with today circled in red.
+ */
+private fun drawCalendar(context: Context): Bitmap {
+    val W = 800; val H = 800
     val bitmap = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(bitmap)
+
+    // Transparent background — the rounded shape comes from widget_background.xml
     canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
 
-    val ntypeTf = context.resources.getFont(R.font.ntype82_regular)
+    val textColor = context.themeColor()
+    val ntypeTf   = context.font(R.font.ntype82_regular)
+    val interTf   = context.font(R.font.inter)
 
-    val interTf = context.resources.getFont(R.font.inter)
+    val calendar  = Calendar.getInstance()
+    val today     = calendar.get(Calendar.DAY_OF_MONTH)
+    val monthName = android.text.format.DateFormat.format("MMM", calendar).toString()
+    val dayName   = android.text.format.DateFormat.format("EEEE", calendar).toString()
 
-    val calendar = Calendar.getInstance()
-    val today      = calendar.get(Calendar.DAY_OF_MONTH)
-    val monthName  = android.text.format.DateFormat.format("MMM", calendar).toString()
-    val dayName    = android.text.format.DateFormat.format("EEEE", calendar).toString()
+    // Draw the header — e.g. "Wednesday, Oct"
+    canvas.drawText(
+        "$dayName, $monthName",
+        14f, 120f,
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            typeface = ntypeTf
+            color    = textColor
+            textSize = context.dp(42f)
+        }
+    )
 
-    // Header piccolo: "Tuesday, Oct"
-    val headerPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        typeface = ntypeTf
-        color = textColor
-        textSize = spCalendar(context, 42f)
-    }
-    canvas.drawText("$dayName, $monthName", 14f, 120f, headerPaint)
-
-    // Griglia
-    val firstDay = Calendar.getInstance().apply { set(Calendar.DAY_OF_MONTH, 1) }
-    val startDow    = (firstDay.get(Calendar.DAY_OF_WEEK) - 2).let { if (it < 0) 6 else it }
+    // Compute grid layout for the current month
+    val firstDay    = Calendar.getInstance().apply { set(Calendar.DAY_OF_MONTH, 1) }
+    val startDow    = (firstDay.get(Calendar.DAY_OF_WEEK) - 2).let { if (it < 0) 6 else it } // Mon = 0
     val daysInMonth = firstDay.getActualMaximum(Calendar.DAY_OF_MONTH)
 
     val colW       = W / 7f
     val rowH       = 105f
-    val gridStartY = 240f
+    val gridStartY = 260f
     val gridStartX = 10f
 
     val numPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        typeface = interTf
-        textSize = spCalendar(context, 20f)
-        typeface = Typeface.create(interTf, Typeface.BOLD)
+        typeface  = interTf
+        textSize  = context.dp(20f)
         textAlign = Paint.Align.CENTER
     }
+
+    // Red circle used to highlight today
     val dotPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.parseColor("#D71921")
         style = Paint.Style.FILL
@@ -126,23 +117,19 @@ private fun drawCalendar(
         val cy = gridStartY + row * rowH
 
         if (day == today) {
+            // Draw red circle behind today's number
             canvas.drawCircle(cx, cy - 24f, 48f, dotPaint)
             numPaint.color = Color.WHITE
-        }else{
+        } else {
             numPaint.color = textColor
-            numPaint.typeface = interTf
         }
 
         canvas.drawText(day.toString(), cx, cy, numPaint)
 
+        // Advance to the next column, wrapping to a new row after Saturday
         col++
         if (col > 6) { col = 0; row++ }
     }
 
     return bitmap
 }
-
-private fun spCalendar(context: Context, value: Float): Float =
-    TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_SP, value, context.resources.displayMetrics
-    )
