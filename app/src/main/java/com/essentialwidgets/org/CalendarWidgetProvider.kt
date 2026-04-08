@@ -1,6 +1,5 @@
 package com.essentialwidgets.org
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -43,7 +42,7 @@ internal fun updateCalendarWidget(context: Context, appWidgetManager: AppWidgetM
     views.setImageViewBitmap(R.id.widget_canvas, drawCalendar(context))
 
     // Apply the themed rounded background drawable
-    views.setInt(R.id.widget_root, "setBackgroundResource", R.drawable.widget_background)
+    views.setInt(R.id.widget_root, "setBackgroundResource", R.drawable.widget_2x2_background)
 
     // Tap opens the system calendar app
     val calendarIntent = Intent(Intent.ACTION_MAIN).apply {
@@ -52,6 +51,7 @@ internal fun updateCalendarWidget(context: Context, appWidgetManager: AppWidgetM
     views.setOnClickPendingIntent(R.id.widget_root, context.openAppIntent(0, calendarIntent))
 
     appWidgetManager.updateAppWidget(widgetId, views)
+
 }
 
 /**
@@ -68,7 +68,7 @@ private fun drawCalendar(context: Context): Bitmap {
     canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
 
     val textColor = context.themeColor()
-    val ntypeTf   = context.font(R.font.ntype82_regular)
+    val ntypeTf   = context.font(R.font.serif_regular)
     val interTf   = context.font(R.font.inter)
 
     val calendar  = Calendar.getInstance()

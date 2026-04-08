@@ -23,7 +23,7 @@ class ThemeWatcherService : Service() {
                 // Update digital time 2 widget
                 appWidgetManager.getAppWidgetIds(
                     ComponentName(context, DigitalTime2Provider::class.java)
-                ).forEach { updateDigitalTime2Widget(context, appWidgetManager, it) }
+                ).forEach { updateDigitalClock2Widget(context, appWidgetManager, it) }
 
                 // Update alarm widget
                 appWidgetManager.getAppWidgetIds(
@@ -34,6 +34,11 @@ class ThemeWatcherService : Service() {
                 appWidgetManager.getAppWidgetIds(
                     ComponentName(context, CalendarWidgetProvider::class.java)
                 ).forEach { updateCalendarWidget(context, appWidgetManager, it) }
+
+// Update analog digital widget
+                appWidgetManager.getAppWidgetIds(
+                    ComponentName(context, AnalogDigitalClockWidgetProvider::class.java)
+                ).forEach { updateAnalogDigitalClockWidget(context, appWidgetManager, it) }
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.essentialwidgets.org
 
 import android.app.AlarmManager
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -12,42 +11,45 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.provider.AlarmClock
+import android.text.TextPaint
 import android.widget.RemoteViews
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import android.text.TextPaint
 
-// Ogni occorrenza di ClockWidgetProvider → DigitalTime2Provider
 class DigitalTime2Provider : AppWidgetProvider() {
 
+    /** Re-renders the widget when the system theme changes */
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         if (intent.action == Intent.ACTION_CONFIGURATION_CHANGED) {
             val manager = AppWidgetManager.getInstance(context)
             manager.getAppWidgetIds(ComponentName(context, DigitalTime2Provider::class.java))
-                .forEach { updateDigitalTime2Widget(context, manager, it) }
+                .forEach { updateDigitalClock2Widget(context, manager, it) }
         }
     }
 
+    /** Called by the system when the widget needs to be updated */
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         context.startForegroundService(Intent(context, ThemeWatcherService::class.java))
         AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, DigitalTime2Provider::class.java))
-            .forEach { updateDigitalTime2Widget(context, appWidgetManager, it) }
-        scheduleNextUpdate(context)
-    }
+            .forEach { updateDigitalClock2Widget(context, appWidgetManager, it) }
 
-    override fun onDisabled(context: Context) {
-        val pi = PendingIntent.getBroadcast(
-            context, 0,
-            Intent(context, DigitalTime2Provider::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        // Use shared helpers from WidgetExtensions — no dedicated schedule function needed
+        scheduleNextMinuteUpdate(
+            context,
+            buildWidgetUpdateIntent(context, DigitalTime2Provider::class.java, 0)
         )
-        (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).cancel(pi)
     }
 
+    /** Cancels the scheduled update when the last widget instance is removed */
+    override fun onDisabled(context: Context) {
+        (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).cancel(
+            buildWidgetUpdateIntent(context, DigitalTime2Provider::class.java, 0)
+        )
+    }
 }
 
 /**
@@ -111,35 +113,24 @@ private fun createClockBitmap(context: Context, text: String, typeface: Typeface
 
     return bitmap
 }
-/** Schedules an exact-ish broadcast at the top of the next minute to refresh the clock */
-fun scheduleNextUpdate(context: Context) {
-    val intent = Intent(context, DigitalTime2Provider::class.java).apply {
-        action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        putExtra(
-            AppWidgetManager.EXTRA_APPWIDGET_IDS,
-            AppWidgetManager.getInstance(context)
-                .getAppWidgetIds(ComponentName(context, DigitalTime2Provider::class.java))
-        )
-    }
-    val pi = PendingIntent.getBroadcast(
-        context, 0, intent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-    )
-    val now = System.currentTimeMillis()
-    (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager)
-        .setWindow(AlarmManager.RTC, now + (60000 - now % 60000), 60000, pi)
-}
 
 /** Builds and pushes the clock widget UI. Internal so ThemeWatcherService can call it directly. */
-internal fun updateDigitalTime2Widget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
-    val views    = RemoteViews(context.packageName, R.layout.digital_time2_widget_layout)
-    val typeface = context.font(R.font.ntype82_regular)
+internal fun updateDigitalClock2Widget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+    val views    = RemoteViews(context.packageName, R.layout.digital_clock2_widget_layout)
+    val typeface = context.font(R.font.serif_regular)
     val time     = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
 
     views.setImageViewBitmap(R.id.widget_text_clock, createClockBitmap(context, time, typeface, 32f))
+
+    // Apply the themed rounded background
+    views.setInt(R.id.widget_root, "setBackgroundResource", R.drawable.widget_2x1_background)
+
+    // Tap opens the clock app
     views.setOnClickPendingIntent(
         R.id.widget_root,
         context.openAppIntent(appWidgetId, Intent(AlarmClock.ACTION_SHOW_ALARMS))
     )
+
     appWidgetManager.updateAppWidget(appWidgetId, views)
+
 }

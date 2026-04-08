@@ -3,4 +3,6 @@
     <string name="clock_widget_description">A beautiful digital clock for your homescreen</string>
     <string name="alarm_widget_description">View and set your next alarm from the homescreen</string>
     <string name="calendar_widget_description">See the current month at a glance</string>
+    <string name="analog_digital_clock_description">A beautiful analog-digital clock for your homescreen</string>
+
 </resources>

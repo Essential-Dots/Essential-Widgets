@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:gravity="center"
     android:padding="8dp"
-    android:background="@drawable/rounded_widget_background">
+    android:background="@drawable/widget_2x1_background">
 
     <ImageView
         android:id="@+id/alarm_icon"

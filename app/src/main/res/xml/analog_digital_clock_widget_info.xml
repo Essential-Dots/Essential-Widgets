@@ -1,0 +1,13 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="120dp"
+    android:minHeight="120dp"
+    android:maxResizeWidth="120dp"
+    android:maxResizeHeight="60dp"
+    android:resizeMode="none"
+    android:targetCellWidth="2"
+    android:targetCellHeight="2"
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen"
+    android:label="Analog Clock"
+    android:description="@string/analog_digital_clock_description"
+    android:previewImage="@drawable/analog_digital_clock_widget_preview" />

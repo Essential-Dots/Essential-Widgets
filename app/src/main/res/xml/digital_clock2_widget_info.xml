@@ -1,0 +1,15 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="120dp"
+    android:minHeight="60dp"
+    android:maxResizeWidth="120dp"
+    android:maxResizeHeight="60dp"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/digital_clock2_widget_layout"
+    android:resizeMode="none"
+    android:widgetCategory="home_screen"
+
+    android:label="Digital Clock 2"
+    android:description="@string/clock_widget_description"
+    android:previewImage="@drawable/digital_clock2_widget_preview"/>
