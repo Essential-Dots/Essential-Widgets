@@ -4,8 +4,14 @@
     <!-- ================ Primary Colors =================== -->
     <color name="background">?android:attr/colorForeground</color>
     <color name="foreground">?android:attr/colorBackground</color>
+    <color name="bottom">@color/black</color>
+    <color name="top">@color/white</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="foreground_20">#33FFFFFF</color>
+    <color name="foreground_40">#66FFFFFF</color>
+    <color name="background_60">#99000000</color>
+    <color name="background_30">#44000000</color>
 
     <!-- ================ Nothing's Colors =================== -->
     <color name="n_blue">#FF2F3186</color>

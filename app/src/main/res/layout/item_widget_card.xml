@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="6dp">
+
+    <!-- Card with widget preview -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/background_30"
+        app:cardElevation="0dp"
+        app:strokeWidth="0.1dp"
+        app:strokeColor="@color/foreground_20">
+
+        <!-- Size badge (e.g. "2x2") -->
+        <TextView
+            android:id="@+id/tv_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_margin="10dp"
+            android:text="2x2"
+            android:textSize="10sp"
+            android:fontFamily="@font/inter" />
+
+        <!-- Widget preview image (centered) -->
+        <ImageView
+            android:id="@+id/iv_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:padding="24dp"
+            android:src="@drawable/ic_launcher_foreground" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Widget name below the card -->
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="4dp"
+        android:text="Calendar"
+        android:textSize="13sp"
+        android:fontFamily="@font/inter" />
+
+</LinearLayout>

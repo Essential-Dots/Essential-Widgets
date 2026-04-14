@@ -113,7 +113,7 @@ fun scheduleNextMinuteUpdate(context: Context, pendingIntent: PendingIntent) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     // setWindow is sufficient for a clock widget — no need for exact alarms
-    alarmManager.setWindow(AlarmManager.RTC, nextMinute, 200 , pendingIntent)
+    alarmManager.setWindow(AlarmManager.RTC, nextMinute, 1 , pendingIntent)
 }
 
 /**
