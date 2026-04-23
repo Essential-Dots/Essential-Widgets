@@ -4,5 +4,6 @@
     <string name="alarm_widget_description">View and set your next alarm from the homescreen</string>
     <string name="calendar_widget_description">See the current month at a glance</string>
     <string name="analog_digital_clock_description">A beautiful analog-digital clock for your homescreen</string>
+    <string name="torch_widget_description">Turn on your torch from the homescreen and change the brightness</string>
 
 </resources>

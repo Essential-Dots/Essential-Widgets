@@ -35,10 +35,14 @@ class ThemeWatcherService : Service() {
                     ComponentName(context, CalendarWidgetProvider::class.java)
                 ).forEach { updateCalendarWidget(context, appWidgetManager, it) }
 
-// Update analog digital widget
+                // Update analog digital widget
                 appWidgetManager.getAppWidgetIds(
                     ComponentName(context, AnalogDigitalClockWidgetProvider::class.java)
                 ).forEach { updateAnalogDigitalClockWidget(context, appWidgetManager, it) }
+
+                appWidgetManager.getAppWidgetIds(
+                    ComponentName(context, TorchWidgetProvider::class.java)
+                ).forEach { TorchWidgetProvider.updateTorchWidget(context, appWidgetManager, it) }
             }
         }
     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/widget_torch_fill.xml -->
+<!-- Barra rossa che cresce dal basso verso l'alto in base al livello (0..10000) -->
+<!-- Usata come layer sovrapposto allo sfondo grigio -->
+<clip xmlns:android="http://schemas.android.com/apk/res/android"
+    android:clipOrientation="vertical"
+    android:gravity="bottom">
+
+    <shape android:shape="rectangle">
+        <solid android:color="@color/n_red" />
+        <corners android:radius="40dp" />
+    </shape>
+
+</clip>

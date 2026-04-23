@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/widget_torch.xml -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/torch_widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/torch_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/widget_2x1_background" />
+
+    <!-- red background -->
+    <ImageView
+        android:id="@+id/torch_fill"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/widget_torch_fill"
+        android:scaleType="fitXY" />
+
+    <!-- icons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <!-- UP arrow -->
+        <ImageView
+            android:id="@+id/torch_btn_up"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/ic_arrow_up"
+            android:padding="1dp"
+            android:layout_marginBottom="2dp" />
+
+        <!-- Torch Icon -->
+        <ImageView
+            android:id="@+id/torch_btn_toggle"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_flashlight_off"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- DOWN arrow -->
+        <ImageView
+            android:id="@+id/torch_btn_down"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/ic_arrow_down"
+            android:padding="1dp"
+            android:layout_marginTop="2dp"/>
+
+    </LinearLayout>
+
+    <!-- glyph (optional) -->
+    <ImageView
+        android:id="@+id/torch_glyph_btn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent" />
+
+</RelativeLayout>

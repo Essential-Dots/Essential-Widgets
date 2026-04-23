@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/xml/widget_torch_info.xml -->
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="60dp"
+    android:minHeight="120dp"
+    android:targetCellWidth="1"
+    android:targetCellHeight="2"
+    android:updatePeriodMillis="0"
+    android:previewImage="@drawable/torch_widget_preview"
+    android:resizeMode="none"
+
+
+    android:label="Torch"
+    android:description="@string/torch_widget_description"
+    android:widgetCategory="home_screen" />

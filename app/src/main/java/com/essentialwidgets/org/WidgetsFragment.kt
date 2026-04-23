@@ -28,6 +28,7 @@ class WidgetsFragment : Fragment() {
         WidgetItem("Digital Clock", "2×1", R.drawable.digital_clock2_widget_preview),
         WidgetItem("Analog Digital Clock", "2×2", R.drawable.analog_digital_clock_widget_preview),
         WidgetItem("Calendar", "2×2", R.drawable.calendar_widget_preview),
+        WidgetItem("Torch", "2x1", R.drawable.torch_widget_preview)
     )
 
     private lateinit var adapter: WidgetAdapter
@@ -74,6 +75,7 @@ class WidgetsFragment : Fragment() {
             "Digital Clock" -> ComponentName(requireContext(), DigitalTime2Provider::class.java)
             "Analog Digital Clock" -> ComponentName(requireContext(), AnalogDigitalClockWidgetProvider::class.java)
             "Calendar" -> ComponentName(requireContext(), CalendarWidgetProvider::class.java)
+            "Torch" -> ComponentName(requireContext(), TorchWidgetProvider::class.java)
             else -> return
         }
 

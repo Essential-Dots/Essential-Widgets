@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
 
     <!-- App and activities -->
@@ -94,6 +95,22 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/analog_digital_clock_widget_info" />
+        </receiver>
+
+        <!-- Torch Widget -->
+        <receiver
+            android:name=".TorchWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.essentialwidgets.org.TORCH_CLICK" />
+                <action android:name="com.essentialwidgets.org.TORCH_DOUBLE_CLICK" />
+                <action android:name="com.essentialwidgets.org.BRIGHT_UP" />
+                <action android:name="com.essentialwidgets.org.BRIGHT_DOWN" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/torch_widget_info" />
         </receiver>
 
     </application>
